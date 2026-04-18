@@ -25,15 +25,15 @@ class SnowSimulator:
         self.piled_snow = {x: ground_y for x in range(width)}
 
     def spawn_snowflake(self, width):
-        intensity = int(self.snow_intensity * 8)
+        intensity = int(self.snow_intensity * 10)
         for _ in range(intensity):
             self.snowflakes.append(
                 {
                     "x": random.randint(0, width - 1),
-                    "y": random.randint(-10, -1),
-                    "speed": random.uniform(0.5, 2.0),
-                    "drift": random.uniform(-0.5, 0.5),
-                    "size": random.choice([1, 1, 1, 2, 2, 3]),
+                    "y": random.randint(-5, -1),
+                    "speed": random.uniform(1.0, 3.0),
+                    "drift": random.uniform(-0.3, 0.3),
+                    "size": random.choice([1, 1, 2, 2, 3]),
                     "rotation": random.uniform(0, 360),
                 }
             )
@@ -96,13 +96,11 @@ class SnowSimulator:
                 px = int(flake["x"])
                 if 0 <= px < width:
                     if self.temperature <= 2:
-                        self.piled_snow[px] = max(
-                            self.piled_snow.get(px, ground_y) - 1, pile_height
-                        )
-                        self.check_collapse(px, ground_y)
-                    else:
-                        pass
-                flake["y"] = -10
+                        current_pile = self.piled_snow.get(px, ground_y)
+                        if current_pile > ground_y - 10:
+                            self.piled_snow[px] = current_pile - 1
+                            self.check_collapse(px, ground_y)
+                    flake["y"] = -10
 
         self.snowflakes = [
             f for f in self.snowflakes if -15 <= f["x"] < width and f["y"] < height

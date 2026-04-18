@@ -1,0 +1,9 @@
+[project]
+name = "snow-sim"
+version = "0.1.0"
+description = "Terminal-based snow simulator"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+snow-sim = "snow_sim:run"
